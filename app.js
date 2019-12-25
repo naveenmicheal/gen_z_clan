@@ -38,7 +38,7 @@ app.get('/', (req, res)=>{
 // });
 
 
-console.clear()
+// console.clear()
 app.listen(port,()=>{
 	console.log(`App listening on ${port}`)
 })

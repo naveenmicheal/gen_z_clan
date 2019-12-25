@@ -28,10 +28,10 @@ router.get('/', (req, res)=>{
 
 router.post('/add',(req,res)=>{
 	const new_post = {
-		title:"New Title",
-		authorname:"New Author",
-		authorid:"7978",
-		threadid:"6767"
+		title:req.body.title,
+		authorname:req.body.authorname,
+		authorid:req.body.authorid,
+		threadid:req.body.threadid
 	}
 	const validate = schema.validate(new_post)
 	// console.log(validate.error)
@@ -52,6 +52,54 @@ router.post('/add',(req,res)=>{
 	}
 	// res.json("DONE")
 })
+
+router.put('/:id',(req,res)=>{
+	const new_post = {
+		title:req.body.title,
+		authorname:req.body.authorname,
+		authorid:req.body.authorid,
+		threadid:req.body.threadid
+	};
+	// console.log((req.params.id).toString())
+
+	let arg = (req.params.id).toString()
+	const validate = schema.validate(new_post)
+
+	if(validate.error == null){
+		postmodel.update({threadid:{$eq: arg}},new_post,(err,result)=>{
+			if(err){
+				res.json({err})
+			}
+			else{
+				res.json(result)
+			}
+		})
+
+		// postmodel.find({threadid:{$eq : "278"}},(err,resp)=>{
+		// 	err ? res.json(err) : res.json(resp)
+		// })
+
+		// postmodel.update({"278":"278"},{$set:{new_post}},(err,result)=>{
+		// 	err ? res.json(err) : res.json(result)
+		// })
+	}
+	else{																			
+		res.json(validate.error)
+		}
+});
+
+router.delete('/:id',(req,res)=>{
+	let input_id = (req.params.id).toString()
+	postmodel.deleteOne({threadid:input_id},(err,result)=>{
+		if(err){
+			res.json(err)
+		}
+		else{
+			res.json(result)
+		}
+	})
+})
+
 
 
 module.exports = router
