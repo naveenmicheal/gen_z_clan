@@ -4,7 +4,7 @@
   "description": "forum web application in node js ",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js --inspect"
+    "dev": "nodemon app.js"
   },
   "author": "Naveen Micheal",
   "license": "ISC",

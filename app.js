@@ -1,10 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
-const post = require('./routes/post')
+const post = require('./routes/post');
+const register = require('./routes/register');
 
-// Models:
-// const postmodel = require('./models/postmodel');
+
 
 
 const app = express();
@@ -16,12 +16,13 @@ mongoose.connect('mongodb://localhost/genzclan',
 	{dbName:'genzclan',useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set('useCreateIndex', true);
 
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', ()=>console.log("DB Connection Error"));
 db.once('open',()=>console.log('Connction DB Done'));
 
 // Routes
 app.use('/post', post)
+app.use('/user',register)
 
 
 app.get('/', (req, res)=>{

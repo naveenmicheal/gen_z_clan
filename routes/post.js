@@ -6,8 +6,8 @@ const postmodel = require('../models/postmodel');
 
 // JOI validation
 const schema = Joi.object().keys({
-    title:Joi.string().min(2).max(100).trim().required(),
-    authorname:Joi.string().min(2).max(100).trim().required(),
+    username:Joi.string().min(2).max(100).trim().required(),
+    name:Joi.string().min(2).max(100).trim().required(),
     authorid:Joi.string().min(2).trim().max(500),
     threadid:Joi.string().min(2).trim().max(500),
 });
@@ -24,7 +24,10 @@ router.get('/', (req, res)=>{
 			res.json(result)
 		}
 	})
+
 })
+
+
 
 router.post('/add',(req,res)=>{
 	const new_post = {
