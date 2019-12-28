@@ -3,38 +3,54 @@ const router = express.Router()
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose')
 const usermodel = require('../models/usermodel');
+const bcrypt = require('bcrypt');
+
+const rounds = 5;
 
 // JOI validation
 const schema = Joi.object().keys({
-    username:Joi.string().min(5).max(100).trim().required(),
+    username:Joi.string().min(3).max(100).trim().required(),
     name:Joi.string().min(2).max(100).trim().required(),
-    email:Joi.string().min(2).trim().max(500),
-    password:Joi.string().min(2).trim().max(500),
-    info:Joi.string().min(2).trim().max(500),
+    email:Joi.string().min(2).trim().max(500).required(),
+    password:Joi.string().min(2).trim().max(800).required(),
+    info:Joi.string().min(2).trim().max(500).required(),
     created:Joi.date().required()
 });
 
 
 
-router.post('/register',(req,res)=>{
-	const new_user = {
-		username:req.body.username,
-		name:req.body.name,
-		email:req.body.email,
-        password:req.body.password,
-        created:req.body.created,
-        info:req.body.info
-	}
-	const validate = schema.validate(new_user)
-	if (validate.error == null){
-		console.log(new_user)
-		res.json(validate)
-	}
-	else{
-		res.json(validate.error)
-	}
-	// res.json("DONE")
-})
+router.post('/signup', (req, res) => {
+
+	bcrypt.hash(req.body.password, rounds, (err, hash) => {
+		const new_user = {
+			username: req.body.username,
+			name: req.body.name,
+			email: req.body.email,
+			password: hash,
+			created: req.body.created,
+			info: req.body.info
+		}
+		const validate = schema.validate(new_user)
+		if (validate.error == null) {
+			const new_user_obj = new usermodel(new_user)
+			new_user_obj.save((err, result) => {
+				if (err) {
+					res.json({
+						status: "Given infomation already exists"
+					})
+				} 
+				else
+				{
+					res.json(result)
+				}
+			})
+		}
+		else
+		 {
+			res.json(validate.error)
+		}
+	})
+});
 
 // router.put('/:id',(req,res)=>{
 // 	const new_post = {

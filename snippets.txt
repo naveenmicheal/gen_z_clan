@@ -6,3 +6,15 @@
 		"authorid":"21",
 		"threadid":"253"
 }
+
+SIGN UP USER
+
+  {
+        "username": "joe331",
+        "name": "john doe",
+        "email": "myemail@mail.com",
+        "password": "secret",
+        "created":"2018-08-28T11:46:30.120",
+        "info":"0.0.0.0"
+        
+  }

@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 const post = require('./routes/post');
-const register = require('./routes/register');
-
-
+const user = require('./routes/user');
 
 
 const app = express();
@@ -22,7 +20,7 @@ db.once('open',()=>console.log('Connction DB Done'));
 
 // Routes
 app.use('/post', post)
-app.use('/user',register)
+app.use('/user',user)
 
 
 app.get('/', (req, res)=>{
@@ -39,7 +37,7 @@ app.get('/', (req, res)=>{
 // });
 
 
-// console.clear()
+console.clear()
 app.listen(port,()=>{
 	console.log(`App listening on ${port}`)
 })
