@@ -27,7 +27,8 @@ router.post('/signup', (req, res) => {
 			name: req.body.name,
 			email: req.body.email,
 			password: hash,
-			created: req.body.created,
+			// created: req.body.created,
+			created: new Date(),
 			info: req.body.info
 		}
 		const validate = schema.validate(new_user)
@@ -51,6 +52,11 @@ router.post('/signup', (req, res) => {
 		}
 	})
 });
+
+
+router.post('/login',(req,res)=>{
+
+})
 
 // router.put('/:id',(req,res)=>{
 // 	const new_post = {
