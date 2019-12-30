@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken');
 const usermodel = require('../models/usermodel');
 const bcrypt = require('bcrypt');
+const dotenv = require('dotenv').config();
 
 const rounds = 5;
 
@@ -63,15 +65,35 @@ router.post('/login',(req,res)=>{
 				bcrypt.compare(inpass, result['password'], function(passerr, passres) {
     			// passres ? res.json(passres) : res.json(passerr) 
     			if(passres){
-    				res.json("Password is ok, DONE")
+    				// res.status(200).json("Password is ok, DONE")
+    				console.log("Password is ok")
+    				jwt.sign({
+    					id:result['_id'],
+    					email: result['email']
+    				},process.env.JWT_SECRET,
+    				{
+    					expiresIn:'1h'
+    				},
+    				(err,token)=>{
+    					if(err){
+    						res.json(err)
+    					}
+    					else{
+    						console.log(token)
+    						res.json({status:token})
+    					}
+    				})
+    				
+    				
+    				
     			}
     			else{
-    				res.json("Password is wrong")
+    				res.status(401).json("Password is wrong")
     			}
 		});
 		}
 		else{
-			res.json({status:"Email is wrong"})
+			res.status(401).json({status:"Email is wrong"})
 		}
 	 
 	})
