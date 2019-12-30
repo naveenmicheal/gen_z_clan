@@ -14,7 +14,7 @@ const schema = Joi.object().keys({
     email:Joi.string().min(2).trim().max(500).required(),
     password:Joi.string().min(2).trim().max(800).required(),
     info:Joi.string().min(2).trim().max(500).required(),
-    created:Joi.date().required()
+    created:Joi.string().required()
 });
 
 
@@ -28,8 +28,8 @@ router.post('/signup', (req, res) => {
 			email: req.body.email,
 			password: hash,
 			// created: req.body.created,
-			created: new Date(),
-			info: req.body.info
+			created: new Date().toString(),
+			info: req.connection.remoteAddress
 		}
 		const validate = schema.validate(new_user)
 		if (validate.error == null) {
@@ -55,7 +55,27 @@ router.post('/signup', (req, res) => {
 
 
 router.post('/login',(req,res)=>{
-
+	let inemail = req.body.email;
+	let inpass = req.body.password;
+	usermodel.findOne({'email':inemail},(err,result)=>{
+		if(result){
+				console.log(result)
+				bcrypt.compare(inpass, result['password'], function(passerr, passres) {
+    			// passres ? res.json(passres) : res.json(passerr) 
+    			if(passres){
+    				res.json("Password is ok, DONE")
+    			}
+    			else{
+    				res.json("Password is wrong")
+    			}
+		});
+		}
+		else{
+			res.json({status:"Email is wrong"})
+		}
+	 
+	})
+	
 })
 
 // router.put('/:id',(req,res)=>{

@@ -30,7 +30,7 @@ const userschema = mongoose.Schema({
         max:200
     },
     created:{
-        type:Date,
+        type:String,
         required: true,
 
     },
