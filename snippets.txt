@@ -2,6 +2,9 @@
 
 {
 		"title":"TestData",
+    "tags":['test1','test2']
+    "content":"Testcontnt",
+    "extra":"htts://example.com/video123.mp4",
 		"authorname":"TestData",
 		"authorid":"21",
 		"threadid":"253"
@@ -26,6 +29,7 @@ SIGN UP USER
   "password" : "secret"
 }
 
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMDg0ZjAwZmNhNzhhMWMyODAwNWY4NiIsImVtYWlsIjoibXllbWFpbEBtYWlsLmNvbSIsImlhdCI6MTU3Nzc3MzM1MCwiZXhwIjoxNTc3Nzc2OTUwfQ.38rriQwXN1NBgm-Gn3rnYVqdw6ps2XpYy-t5BKPOaEY
 
 
 

@@ -6,6 +6,21 @@ const postschema = mongoose.Schema({
 		required:true,
 		// unique: true
 	},
+	tags:{
+		type:Array,
+		required:true,
+		// unique: true
+	},
+	content:{
+		type:String,
+		required:true,
+		// unique: true
+	},
+	extra:{
+		type:String,
+		required:false,
+		// unique: true
+	},
 	authorname:{
 		type:String,
 		required:true,

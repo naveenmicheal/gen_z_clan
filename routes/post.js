@@ -2,25 +2,32 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose')
+// const jwt = require('jsonwebtoken');
 const postmodel = require('../models/postmodel');
 
+const auth = require('../middleware/checkauth.js')
+
+// console.log(auth)
 // JOI validation
-const schema = Joi.object().keys({
-    username:Joi.string().min(2).max(100).trim().required(),
-    name:Joi.string().min(2).max(100).trim().required(),
+const postschema = Joi.object().keys({
+    title:Joi.string().min(2).max(100).trim().required(),
+    tags:Joi.array().min(1).max(100),
+    content:Joi.string().min(2).trim().max(1000),
+    extra:Joi.string().max(1000),
+    authorname:Joi.string().required(),
     authorid:Joi.string().min(2).trim().max(500),
     threadid:Joi.string().min(2).trim().max(500),
 });
 
-router.get('/', (req, res)=>{
+router.get('/', auth ,(req, res)=>{
 	postmodel.find({},(err,result)=>{
-		// err ? console.log(err) : console.log(result)
+		// err ? console.log(err) : console.log(result)	
 		if(err){
 			console.log(err)
 			return
 		}
 		else{
-			console.log(result);
+			// console.log(result);
 			res.json(result)
 		}
 	})
@@ -29,17 +36,21 @@ router.get('/', (req, res)=>{
 
 
 
-router.post('/add',(req,res)=>{
+router.post('/add', auth, (req,res)=>{
 	const new_post = {
 		title:req.body.title,
+		tags:req.body.tags,
+		content:req.body.content,
+		extra:req.body.extra,
 		authorname:req.body.authorname,
 		authorid:req.body.authorid,
-		threadid:req.body.threadid
+		threadid:req.body.threadid,
+
 	}
-	const validate = schema.validate(new_post)
+	const validate = postschema.validate(new_post)
 	// console.log(validate.error)
 	if (validate.error == null){
-		console.log(new_post)
+		// console.log(new_post)
 		const new_post_obj = new postmodel(new_post)
 		new_post_obj.save((err, result)=>{
 			if (err){
@@ -66,10 +77,10 @@ router.put('/:id',(req,res)=>{
 	// console.log((req.params.id).toString())
 
 	let arg = (req.params.id).toString()
-	const validate = schema.validate(new_post)
+	const validate = postschema.validate(new_post)
 
 	if(validate.error == null){
-		postmodel.update({threadid:{$eq: arg}},new_post,(err,result)=>{
+		postmodel.updateOne({threadid:{$eq: arg}},new_post,(err,result)=>{
 			if(err){
 				res.json({err})
 			}

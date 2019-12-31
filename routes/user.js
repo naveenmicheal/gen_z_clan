@@ -23,7 +23,7 @@ const schema = Joi.object().keys({
 
 router.post('/signup', (req, res) => {
 
-	bcrypt.hash(req.body.password, rounds, (err, hash) => {
+	bcrypt.hash(req.body.password, rounds, (err, hash) => {x
 		const new_user = {
 			username: req.body.username,
 			name: req.body.name,
@@ -72,7 +72,7 @@ router.post('/login',(req,res)=>{
     					email: result['email']
     				},process.env.JWT_SECRET,
     				{
-    					expiresIn:'1h'
+    					expiresIn:'10h'
     				},
     				(err,token)=>{
     					if(err){

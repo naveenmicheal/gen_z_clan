@@ -1,15 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
-
-
 const post = require('./routes/post');
 const user = require('./routes/user');
 
 
 const app = express();
-app.use(express.json()); 
 
+app.use(express.json()); 
 const port = 5000;
 
 // Mongoose Connection
